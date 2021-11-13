@@ -1,10 +1,12 @@
-FROM golang:1.15.7-buster
+FROM golang:1.16
 
-COPY go.mod go.sum /go/src/github.com/aleksbgs/letterpress/
-WORKDIR /go/src/github.com/aleksbgs/letterpress
+WORKDIR /app
+COPY go.mod .
+COPY go.sum .
 RUN go mod download
-COPY . /go/src/github.com/aleksbgs/letterpress
-RUN go build -o /usr/bin/letterpress github.com/aleksbgs/letterpress/
 
+COPY . .
+
+RUN curl -sSfL https://raw.githubusercontent.com/cosmtrek/air/master/install.sh | sh -s -- -b $(go env GOPATH)/bin
 EXPOSE 8080 8080
-ENTRYPOINT ["/usr/bin/letterpress"]
+CMD ["air"]

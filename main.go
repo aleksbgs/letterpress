@@ -7,27 +7,37 @@ import (
 	"github/aleksbgs/letterpress/db"
 	"github/aleksbgs/letterpress/handler"
 	"os"
-	"strconv"
 )
 
 func main() {
-	var dbPort int
+	//var dbPort int
 	var err error
 	logger := zerolog.New(os.Stderr).With().Timestamp().Logger()
 
-	port := os.Getenv("POSTGRES_PORT")
-	if dbPort, err = strconv.Atoi(port); err != nil {
-		logger.Err(err).Msg("failed to parse database port")
-		os.Exit(1)
-	}
+	//port := os.Getenv("POSTGRES_PORT")
+	//if dbPort, err = strconv.Atoi(port); err != nil {
+	//	logger.Err(err).Msg("failed to parse database port")
+	//	os.Exit(1)
+	//}
+
+	//local debug
 	dbConfig := db.Config{
-		Host:     os.Getenv("POSTGRES_HOST"),
-		Port:     dbPort,
-		Username: os.Getenv("POSTGRES_USER"),
-		Password: os.Getenv("POSTGRES_PASSWORD"),
-		DbName:   os.Getenv("POSTGRES_DB"),
+		Host:     "127.0.0.1",
+		Port:     5432,
+		Username: "letterpress",
+		Password: "letterpress_secrets",
+		DbName:   "letterpress_db",
 		Logger:   logger,
 	}
+	//dbConfig := db.Config{
+	//	Host:     os.Getenv("POSTGRES_HOST"),
+	//	Port:     dbPort,
+	//	Username: os.Getenv("POSTGRES_USER"),
+	//	Password: os.Getenv("POSTGRES_PASSWORD"),
+	//	DbName:   os.Getenv("POSTGRES_DB"),
+	//	Logger: logger,
+	//}
+
 	logger.Info().Interface("config", &dbConfig).Msg("config:")
 	dbInstance, err := db.Init(dbConfig)
 	if err != nil {

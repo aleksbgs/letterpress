@@ -13,6 +13,7 @@ import (
 )
 
 func (h *Handler) CreatePost(c *gin.Context) {
+	fmt.Println("create post")
 	var post models.Post
 	if err := c.ShouldBindJSON(&post); err != nil {
 		h.Logger.Err(err).Msg("could not parse request body")
